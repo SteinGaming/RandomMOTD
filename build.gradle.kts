@@ -27,10 +27,27 @@ repositories {
 }
 
 val minecraftVersions = listOf(
-    "1.19.4-45.0.43", "1.19.3-44.1.0", "1.19.2-43.2.0", "1.19.1-42.0.9", "1.19-41.1.0",
+    "1.20.6-50.1.0", "1.20.1-47.3.11", "1.19.4-45.0.43", "1.19.3-44.1.0", "1.19.2-43.2.0", "1.19.1-42.0.9", "1.19-41.1.0",
     "1.18.2-40.2.1", "1.18.1-39.1.2", "1.18-38.0.17", "1.16.5-36.2.39"
 )
-val selectedMinecraftVersion = 0
+val selectedMinecraftVersion = 1
+
+
+kotlin {
+    /** As of (probably) 1.20.6, a minimum version of
+     * 21 is required.
+     * If the currently selected version is above 1.20.1,
+     * use JVM 21, else fallback to JVM 17
+      */
+    /* TODO When deploying to JVM 21, do not forget to update the github workflow! */
+    if (minecraftVersions[selectedMinecraftVersion]
+        .substringBefore("-").split(".").let {
+                it[1].toInt() == 20 && it[2].toInt() > 1
+            })
+        jvmToolchain(21)
+    else
+        jvmToolchain(17)
+}
 
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
@@ -145,8 +162,4 @@ tasks {
     jar {
         apply()
     }
-}
-
-kotlin {
-    jvmToolchain(17)
 }
