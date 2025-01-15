@@ -40,6 +40,6 @@ jobs:
     - name: Re-release
       if: ${{ github.ref == 'refs/heads/main' }}
       run: |
-          ghr -delete v1.0.0 output/
+          ghr -delete v1.1.0 output/
       env: 
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

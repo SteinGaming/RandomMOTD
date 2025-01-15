@@ -6,6 +6,7 @@ import com.google.gson.JsonArray
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.minecraftforge.fml.ModLoadingContext
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext
@@ -13,7 +14,7 @@ import net.minecraftforge.server.ServerLifecycleHooks
 import java.io.File
 
 @Mod(RandomMOTD.MODID)
-class RandomMOTD {
+class RandomMOTD constructor(val fml: FMLJavaModLoadingContext) {
     companion object {
         const val MODID = "randommotd"
         private val configFile: File = File("config/randommotd.json")
@@ -40,7 +41,7 @@ class RandomMOTD {
                 it.write(gson.toJson(config))
             }
         }
-        FMLJavaModLoadingContext.get().modEventBus.addListener<FMLDedicatedServerSetupEvent> {
+        fml.modEventBus.addListener<FMLDedicatedServerSetupEvent> {
             GlobalScope.launch {
                 while (true) {
                     delay(config.delay)
