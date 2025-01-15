@@ -1,3 +1,7 @@
+import com.github.jengelman.gradle.plugins.shadow.relocation.RelocateClassContext
+import com.github.jengelman.gradle.plugins.shadow.relocation.RelocatePathContext
+import com.github.jengelman.gradle.plugins.shadow.relocation.Relocator
+import com.github.jengelman.gradle.plugins.shadow.relocation.SimpleRelocator
 import net.minecraftforge.gradle.common.util.RunConfig
 import org.gradle.jvm.tasks.Jar
 
@@ -152,6 +156,8 @@ reobf.create("shadowJar") {
 tasks {
     shadowJar {
         configurations = listOf(shade)
+        relocate("kotlin", "eu.steingaming.randommotd.moved.kotlin")
+        relocate("kotlinx", "eu.steingaming.randommotd.moved.kotlinx")
         finalizedBy("reobfShadowJar")
     }
 
